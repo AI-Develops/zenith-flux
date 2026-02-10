@@ -1,0 +1,200 @@
+/* MODERN CSS RESET & VARIABLES */
+:root {
+    /* Using OKLCH for wider color gamut support */
+    --surface-1: oklch(15% 0 0);
+    --surface-2: oklch(20% 0.02 260);
+    --surface-glass: oklch(20% 0.02 260 / 50%);
+    --text-primary: oklch(98% 0 0);
+    --text-secondary: oklch(70% 0 0);
+    --accent: oklch(70% 0.19 320); /* Vibrant Pink/Purple */
+    --accent-glow: oklch(70% 0.19 320 / 30%);
+    
+    --radius: 24px;
+    --gap: 16px;
+    --transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--surface-1);
+    background-image: 
+        radial-gradient(circle at 10% 20%, oklch(25% 0.1 260 / 20%), transparent 40%),
+        radial-gradient(circle at 90% 80%, oklch(25% 0.1 320 / 20%), transparent 40%);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+}
+
+/* BENTO GRID LAYOUT */
+.bento-wrapper {
+    display: grid;
+    /* Responsive grid logic */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    /* Max width for desktop constraint */
+    max-width: 800px;
+    width: 100%;
+    gap: var(--gap);
+    grid-auto-rows: 180px;
+}
+
+/* CARD STYLES */
+.card {
+    background: var(--surface-2);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid oklch(100% 0 0 / 5%);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--text-primary);
+}
+
+/* GLASS EFFECT */
+.card {
+    background: var(--surface-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* MODERN INTERACTIVITY: :has() Selector
+   When the wrapper has a card being hovered, dim the other cards */
+body:has(.card:hover) .card:not(:hover) {
+    opacity: 0.5;
+    transform: scale(0.98);
+    filter: grayscale(0.8);
+}
+
+.card:hover {
+    transform: scale(1.02);
+    border-color: var(--accent);
+    box-shadow: 0 10px 40px -10px var(--accent-glow);
+    z-index: 10;
+}
+
+/* CARD SPECIFICS */
+
+/* 1. Intro Card - Spans full width on mobile, 2 cols on desktop */
+.intro {
+    grid-column: span 2;
+    grid-row: span 2;
+    background: linear-gradient(145deg, var(--surface-2), oklch(25% 0.05 260));
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.intro h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+}
+
+.gradient-text {
+    background: linear-gradient(to right, oklch(80% 0.1 300), oklch(70% 0.2 340));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.pill {
+    background: oklch(100% 0 0 / 10%);
+    width: fit-content;
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid oklch(100% 0 0 / 10%);
+}
+
+/* 2. Social / Link */
+.social {
+    background: oklch(90% 0.05 100); /* Light card for contrast */
+    color: var(--surface-1);
+}
+
+.icon-box svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* 3. Stack Tags */
+.stack .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags span {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    background: oklch(0% 0 0 / 30%);
+    border-radius: 8px;
+}
+
+/* 4. Location Map */
+.location {
+    position: relative;
+    padding: 0;
+}
+
+.map-bg {
+    position: absolute;
+    inset: 0;
+    /* CSS only pattern */
+    background-image: radial-gradient(var(--text-secondary) 1px, transparent 1px);
+    background-size: 10px 10px;
+    opacity: 0.2;
+}
+
+.location-pin {
+    z-index: 2;
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+.location-pin svg { width: 20px; height: 20px; }
+
+/* 5. Project */
+.project {
+    grid-column: span 1;
+    background: linear-gradient(to bottom right, var(--surface-2), var(--accent));
+}
+
+/* 6. Toggle (Small square) */
+.toggle {
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+.toggle svg { width: 24px; height: 24px; }
+
+/* FOOTER */
+footer {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-top: 2rem;
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 600px) {
+    .bento-wrapper {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+    }
+    .intro { grid-column: span 1; }
+}
